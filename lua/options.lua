@@ -36,6 +36,14 @@ vim.schedule(function()
   }
 end)
 
+-- Yank to clipboard
+vim.keymap.set({ 'n', 'v' }, 'y', '"+y')
+vim.keymap.set({ 'n', 'v' }, 'Y', '"+Y')
+
+-- Paste from clipboard
+vim.keymap.set({ 'n', 'v' }, 'p', '"+p')
+vim.keymap.set({ 'n', 'v' }, 'P', '"+P')
+
 -- Cursor options
 vim.o.cursorline = false
 vim.opt.guicursor = 'n-v-c:block,i-ci:blinkon0'
@@ -77,7 +85,7 @@ vim.opt.inccommand = 'split'
 vim.opt.cursorline = false
 
 -- Minimal number of screen lines to keep above and below the cursor.
-vim.opt.scrolloff = 10
+vim.opt.scrolloff = 0
 
 -- if performing an operation that would fail due to unsaved changes in the buffer (like `:q`),
 -- instead raise a dialog asking if you wish to save the current file(s)
