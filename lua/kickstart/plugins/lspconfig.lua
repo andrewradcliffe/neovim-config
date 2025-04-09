@@ -24,7 +24,18 @@ return {
       'WhoIsSethDaniel/mason-tool-installer.nvim',
 
       -- Useful status updates for LSP.
-      { 'j-hui/fidget.nvim', opts = {} },
+      { 
+        'j-hui/fidget.nvim', 
+        config = function()
+          require("fidget").setup {
+            notification = {
+                window = {
+                    winblend = 0,
+                },
+            }
+          }
+        end,
+      },
 
       -- Allows extra capabilities provided by nvim-cmp
       'hrsh7th/cmp-nvim-lsp',
@@ -254,6 +265,7 @@ return {
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
+        'pyright'
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -269,9 +281,31 @@ return {
             server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
             require('lspconfig')[server_name].setup(server)
           end,
+          ['pyright'] = function()
+            require('lspconfig').pyright.setup({
+              single_file_support = true,
+              capabilities = capabilities,
+              settings = {
+                pyright = {
+                  disableLanguageServices = false,
+                  disableOrganizeImports = false,
+                },
+                python = {
+                  analysis = {
+                    autoImportCompletions = true,
+                    autoSearchPaths = true,
+                    diagnosticMode = "workspace", -- openFilesOnly, workspace
+                    typeCheckingMode = "off",
+                    useLibraryCodeForTypes = true
+                  }
+                }
+              }
+            })
+          end
         },
       }
     end,
   },
 }
+
 -- vim: ts=2 sts=2 sw=2 et

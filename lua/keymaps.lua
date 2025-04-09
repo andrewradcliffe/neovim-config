@@ -35,17 +35,89 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 -- vim.keymap.set("n", "<C-S-h>", "<C-w>H", { desc = "Move window to the left" })
 -- vim.keymap.set("n", "<C-S-l>", "<C-w>L", { desc = "Move window to the right" })
 -- vim.keymap.set("n", "<C-S-j>", "<C-w>J", { desc = "Move window to the lower" })
--- vim.keymap.set("n", "<C-S-k>", "<C-w>K", { desc = "Move window to the upper" })
 
+-- Yank to clipboard
+vim.keymap.set({ 'n', 'v' }, 'y', '"+y')
+vim.keymap.set({ 'n', 'v' }, 'Y', '"+Y')
+
+-- Paste from clipboard
+vim.keymap.set({ 'n', 'v' }, 'p', '"+p')
+vim.keymap.set({ 'n', 'v' }, 'P', '"+P')
+
+-- Delete to clipboard
+vim.keymap.set({ 'n', 'v' }, 'd', '"+d')
+vim.keymap.set({ 'n', 'v' }, 'D', '"+D')
+
+-- Obsidian and Markdown
 vim.keymap.set('n', '<leader>oc', function()
   vim.schedule(function()
     require('obsidian').util.toggle_checkbox()
   end)
-end, { desc = 'Toggle Checkbox' }
-)
+end, { desc = 'Toggle Checkbox' })
+
+vim.keymap.set('n', '<leader>ot', '<cmd>ObsidianToday<cr>', { desc="[T]oday's daily note"})
+vim.keymap.set('n', '<leader>oy', '<cmd>ObsidianYesterday<cr>', { desc="[Y]esterday's daily note"})
+vim.keymap.set('n', '<leader>oT', '<cmd>ObsidianTomorrow<cr>', { desc="[T]omorrow's daily note"})
+vim.keymap.set('n', '<leader>od', function()
+  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(":ObsidianToday ", true, false, true), 'n', false)
+end, { desc="Open [d]aily note"})
+vim.keymap.set('n', '<leader>op', '<cmd>MarkdownPreviewToggle', { desc="Toggle markdown [p]review" })
+
+-- NeoTree
+vim.keymap.set('n', '<leader>e', function()
+  require('neo-tree.command').execute({ toggle = true, dir = vim.loop.cwd() })
+end, { desc = 'Toggle Neo-tree' })
+
+-- Buffer management
+vim.keymap.set('n', '<leader>c', function()
+  -- Get current buffer
+  local current_buf = vim.api.nvim_get_current_buf()
+
+  -- Get list of all listed buffers
+  local buffers = vim.tbl_filter(function(buf)
+    return vim.api.nvim_buf_get_option(buf, 'buflisted') and buf ~= current_buf
+  end, vim.api.nvim_list_bufs())
+
+  -- Switch to another buffer (first in list), if available
+  if #buffers > 0 then
+    vim.api.nvim_set_current_buf(buffers[1])
+  else
+    vim.cmd 'enew' -- Open empty buffer if none left
+  end
+
+  -- Then delete the old one
+  vim.cmd('bdelete ' .. current_buf)
+end, { desc = '[C]lose buffer', noremap = true, silent = true })
+
+-- Terminal mappings
+-- vim.keymap.set('n', '<C-t>', '<cmd>ToggleTerm direction=float<cr>', { desc="Toggle floating terminal" })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
+
+-- Toggle lazygit
+-- function _toggle_lazygit()
+--   local Terminal = require("toggleterm.terminal").Terminal
+--   local lazygit = Terminal:new({
+--     cmd = "lazygit",
+--     hidden = true,
+--     direction = "float",
+--     float_opts = {
+--       border = "none",
+--       width = 100000,
+--       height = 100000,
+--       zindex = 200,
+--     },
+--     on_open = function(_)
+--       vim.cmd "startinsert!"
+--     end,
+--     on_close = function(_) end,
+--     count = 99,
+--   })
+--   lazygit:toggle()
+-- end
+--
+-- vim.keymap.set('n', '<leader>gg', '<cmd>lua _toggle_lazygit()<cr>', { desc = 'Open lazygit', noremap = true, silent = true, })
 
 -- Highlight when yanking (copying) text
 --  Try it with `yap` in normal mode
@@ -66,10 +138,10 @@ vim.api.nvim_create_autocmd('FileType', {
   end,
 })
 
--- set wrap for markdown files
-vim.api.nvim_create_autocmd('BufEnter', {
-  pattern = { '*.md' },
-  command = 'setlocal wrap',
+-- Disable number column in terminal buffers
+vim.api.nvim_create_autocmd("TermOpen", {
+  pattern = "*",
+  command = "setlocal nonumber norelativenumber",
 })
 
 -- vim: ts=2 sts=2 sw=2 et

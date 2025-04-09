@@ -3,6 +3,25 @@
 -- NOTE: You can change these options as you wish!
 --  For more options, you can see `:help option-list`
 
+-- Set default shell (for toggleterm.nvim)
+vim.o.shell = '"C:\\Program Files (x86)\\PowerShell\\7\\pwsh.exe" -NoLogo -NoExit'
+vim.env.TERM = "xterm-256color"
+
+vim.o.title = true
+
+-- Function to update the title with filename and current folder (project) name
+local function update_title()
+  local file = vim.fn.expand('%:t')  -- Current filename
+  local cwd = vim.fn.fnamemodify(vim.fn.getcwd(), ':t')  -- Current directory name (project)
+  if file == '' then file = '[No Name]' end
+  vim.o.titlestring = string.format('%s (%s)', file, cwd)
+end
+
+-- Autocommand to update the title on events like BufEnter and DirChanged
+vim.api.nvim_create_autocmd({ 'BufEnter', 'BufFilePost', 'DirChanged' }, {
+  callback = update_title
+})
+
 -- Make line numbers default
 vim.opt.number = true
 -- You can also add relative line numbers, to help with jumping.
@@ -35,14 +54,6 @@ vim.schedule(function()
     },
   }
 end)
-
--- Yank to clipboard
-vim.keymap.set({ 'n', 'v' }, 'y', '"+y')
-vim.keymap.set({ 'n', 'v' }, 'Y', '"+Y')
-
--- Paste from clipboard
-vim.keymap.set({ 'n', 'v' }, 'p', '"+p')
-vim.keymap.set({ 'n', 'v' }, 'P', '"+P')
 
 -- Cursor options
 vim.o.cursorline = false

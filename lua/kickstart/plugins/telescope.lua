@@ -60,8 +60,14 @@ return {
         --   mappings = {
         --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
         --   },
+        --   file_ignore_patterns = { ".git/", ".venv/" }
         -- },
-        -- pickers = {}
+        pickers = {
+          find_files = {
+            hidden = true,
+            no_ignore = true
+          }
+        },
         extensions = {
           ['ui-select'] = {
             require('telescope.themes').get_dropdown(),

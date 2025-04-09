@@ -9,6 +9,7 @@ return {
       alpha = true,
       cmp = true,
       dashboard = true,
+	  fidget = true,
       flash = true,
       gitsigns = true,
       headlines = true,
