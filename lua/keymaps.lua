@@ -92,7 +92,7 @@ vim.keymap.set('n', '<leader>bc', function()
 end, { desc = '[C]lose buffer', noremap = true, silent = true })
 
 -- Terminal mappings
-vim.keymap.set('n', '<C-t>', '<cmd>ToggleTerm direction=float<cr>', { desc = 'Toggle floating terminal' })
+vim.keymap.set({ 'n', 't' }, '<C-t>', '<cmd>ToggleTerm direction=float<cr>', { desc = 'Toggle floating terminal' })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
