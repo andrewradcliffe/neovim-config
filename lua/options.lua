@@ -13,7 +13,11 @@ vim.opt.shellpipe = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
 vim.opt.shellquote = ''
 vim.opt.shellxquote = ''
 
+-- set terminal title
 vim.o.title = true
+
+-- fix noice formatting
+vim.opt.cmdheight = 1
 
 -- Function to update the title with filename and current folder (project) name
 local function update_title()
@@ -39,6 +43,7 @@ vim.opt.relativenumber = true
 -- Set default tab length
 vim.opt.shiftwidth = 4
 vim.opt.tabstop = 4
+vim.opt.expandtab = true
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.opt.mouse = 'a'

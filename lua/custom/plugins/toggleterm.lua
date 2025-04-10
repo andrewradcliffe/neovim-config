@@ -36,10 +36,12 @@ return {
       -- Use PowerShell 7
       shell = nil,
       float_opts = {
-        border = 'none',
-        width = 100000,
-        height = 100000,
-        zindex = 200,
+        border = 'curved',
+        winblend = 0,
+        highlights = {
+          border = 'Normal',
+          background = 'Normal',
+        },
       },
       dir = vim.fn.getcwd(),
       on_open = function(_)

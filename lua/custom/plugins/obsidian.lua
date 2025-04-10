@@ -13,11 +13,11 @@ return {
           name = 'Work',
           path = 'C:\\Repos\\obsidian-work-notes',
         },
-		{
-		  name = 'Japanese Notes',
-		  path = 'C:\\repos\\japanese-notes'
-		}
-  },
+        {
+          name = 'Japanese Notes',
+          path = 'C:\\repos\\japanese-notes',
+        },
+      },
       templates = {
         subdir = 'templates',
       },
