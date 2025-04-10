@@ -67,8 +67,8 @@ return {
         { '<leader>t', group = '[T]oggle' },
         { '<leader>h', group = '[G]it Hunk', mode = { 'n', 'v' } },
         { '<leader>o', group = '[O]bsidian' },
+        { '<leader>b', group = '[B]uffer' },
       },
     },
   },
 }
--- vim: ts=2 sts=2 sw=2 et

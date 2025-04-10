@@ -4,22 +4,30 @@
 --  For more options, you can see `:help option-list`
 
 -- Set default shell (for toggleterm.nvim)
-vim.o.shell = '"C:\\Program Files (x86)\\PowerShell\\7\\pwsh.exe" -NoLogo -NoExit'
-vim.env.TERM = "xterm-256color"
+vim.env.TERM = 'xterm-256color'
+vim.opt.shell = vim.fn.executable 'pwsh' and 'pwsh' or 'powershell'
+vim.opt.shellcmdflag =
+  '-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;'
+vim.opt.shellredir = '-RedirectStandardOutput %s -NoNewWindow -Wait'
+vim.opt.shellpipe = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
+vim.opt.shellquote = ''
+vim.opt.shellxquote = ''
 
 vim.o.title = true
 
 -- Function to update the title with filename and current folder (project) name
 local function update_title()
-  local file = vim.fn.expand('%:t')  -- Current filename
-  local cwd = vim.fn.fnamemodify(vim.fn.getcwd(), ':t')  -- Current directory name (project)
-  if file == '' then file = '[No Name]' end
+  local file = vim.fn.expand '%:t' -- Current filename
+  local cwd = vim.fn.fnamemodify(vim.fn.getcwd(), ':t') -- Current directory name (project)
+  if file == '' then
+    file = '[No Name]'
+  end
   vim.o.titlestring = string.format('%s (%s)', file, cwd)
 end
 
 -- Autocommand to update the title on events like BufEnter and DirChanged
 vim.api.nvim_create_autocmd({ 'BufEnter', 'BufFilePost', 'DirChanged' }, {
-  callback = update_title
+  callback = update_title,
 })
 
 -- Make line numbers default
@@ -102,5 +110,3 @@ vim.opt.scrolloff = 0
 -- instead raise a dialog asking if you wish to save the current file(s)
 -- See `:help 'confirm'`
 vim.opt.confirm = true
-
--- vim: ts=2 sts=2 sw=2 et

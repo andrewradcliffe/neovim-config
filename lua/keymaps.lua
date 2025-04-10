@@ -17,14 +17,13 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagn
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
 -- TIP: Disable arrow keys in normal mode
--- vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
--- vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
--- vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
--- vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
+vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
+vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
+vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
+vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
 
 -- Keybinds to make split navigation easier.
 --  Use CTRL+<hjkl> to switch between windows
---
 --  See `:help wincmd` for a list of all window commands
 vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
 vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
@@ -55,21 +54,24 @@ vim.keymap.set('n', '<leader>oc', function()
   end)
 end, { desc = 'Toggle Checkbox' })
 
-vim.keymap.set('n', '<leader>ot', '<cmd>ObsidianToday<cr>', { desc="[T]oday's daily note"})
-vim.keymap.set('n', '<leader>oy', '<cmd>ObsidianYesterday<cr>', { desc="[Y]esterday's daily note"})
-vim.keymap.set('n', '<leader>oT', '<cmd>ObsidianTomorrow<cr>', { desc="[T]omorrow's daily note"})
+vim.keymap.set('n', '<leader>ot', '<cmd>ObsidianToday<cr>', { desc = "[T]oday's daily note" })
+vim.keymap.set('n', '<leader>oy', '<cmd>ObsidianYesterday<cr>', { desc = "[Y]esterday's daily note" })
+vim.keymap.set('n', '<leader>oT', '<cmd>ObsidianTomorrow<cr>', { desc = "[T]omorrow's daily note" })
 vim.keymap.set('n', '<leader>od', function()
-  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(":ObsidianToday ", true, false, true), 'n', false)
-end, { desc="Open [d]aily note"})
-vim.keymap.set('n', '<leader>op', '<cmd>MarkdownPreviewToggle', { desc="Toggle markdown [p]review" })
+  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(':ObsidianToday ', true, false, true), 'n', false)
+end, { desc = 'Open [d]aily note' })
+vim.keymap.set('n', '<leader>op', '<cmd>MarkdownPreviewToggle', { desc = 'Toggle markdown [p]review' })
 
 -- NeoTree
 vim.keymap.set('n', '<leader>e', function()
-  require('neo-tree.command').execute({ toggle = true, dir = vim.loop.cwd() })
+  require('neo-tree.command').execute { toggle = true, dir = vim.loop.cwd() }
 end, { desc = 'Toggle Neo-tree' })
 
+-- Alpha dashboard
+vim.keymap.set('n', '<leader>;', '<cmd>Alpha<cr>', { desc = 'Open dashboard' })
+
 -- Buffer management
-vim.keymap.set('n', '<leader>c', function()
+vim.keymap.set('n', '<leader>bc', function()
   -- Get current buffer
   local current_buf = vim.api.nvim_get_current_buf()
 
@@ -90,7 +92,7 @@ vim.keymap.set('n', '<leader>c', function()
 end, { desc = '[C]lose buffer', noremap = true, silent = true })
 
 -- Terminal mappings
--- vim.keymap.set('n', '<C-t>', '<cmd>ToggleTerm direction=float<cr>', { desc="Toggle floating terminal" })
+vim.keymap.set('n', '<C-t>', '<cmd>ToggleTerm direction=float<cr>', { desc = 'Toggle floating terminal' })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -139,9 +141,7 @@ vim.api.nvim_create_autocmd('FileType', {
 })
 
 -- Disable number column in terminal buffers
-vim.api.nvim_create_autocmd("TermOpen", {
-  pattern = "*",
-  command = "setlocal nonumber norelativenumber",
+vim.api.nvim_create_autocmd('TermOpen', {
+  pattern = '*',
+  command = 'setlocal nonumber norelativenumber',
 })
-
--- vim: ts=2 sts=2 sw=2 et
