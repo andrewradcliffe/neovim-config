@@ -19,20 +19,27 @@ return {
       -- Automatically install LSPs and related tools to stdpath for Neovim
       -- Mason must be loaded before its dependents so we need to set it up here.
       -- NOTE: `opts = {}` is the same as calling `require('mason').setup({})`
-      { 'williamboman/mason.nvim', opts = {} },
+      {
+        'williamboman/mason.nvim',
+        opts = {
+          ui = {
+            border = 'rounded',
+          },
+        },
+      },
       'williamboman/mason-lspconfig.nvim',
       'WhoIsSethDaniel/mason-tool-installer.nvim',
 
       -- Useful status updates for LSP.
-      { 
-        'j-hui/fidget.nvim', 
+      {
+        'j-hui/fidget.nvim',
         config = function()
-          require("fidget").setup {
+          require('fidget').setup {
             notification = {
-                window = {
-                    winblend = 0,
-                },
-            }
+              window = {
+                winblend = 0,
+              },
+            },
           }
         end,
       },
@@ -265,7 +272,7 @@ return {
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
-        'pyright'
+        'pyright',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -282,7 +289,7 @@ return {
             require('lspconfig')[server_name].setup(server)
           end,
           ['pyright'] = function()
-            require('lspconfig').pyright.setup({
+            require('lspconfig').pyright.setup {
               single_file_support = true,
               capabilities = capabilities,
               settings = {
@@ -294,17 +301,16 @@ return {
                   analysis = {
                     autoImportCompletions = true,
                     autoSearchPaths = true,
-                    diagnosticMode = "workspace", -- openFilesOnly, workspace
-                    typeCheckingMode = "off",
-                    useLibraryCodeForTypes = true
-                  }
-                }
-              }
-            })
-          end
+                    diagnosticMode = 'workspace', -- openFilesOnly, workspace
+                    typeCheckingMode = 'off',
+                    useLibraryCodeForTypes = true,
+                  },
+                },
+              },
+            }
+          end,
         },
       }
     end,
   },
 }
-

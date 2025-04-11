@@ -68,6 +68,7 @@ return {
         { '<leader>h', group = '[G]it Hunk', mode = { 'n', 'v' } },
         { '<leader>o', group = '[O]bsidian' },
         { '<leader>b', group = '[B]uffer' },
+        { '<leader>l', group = '[L}SP]' },
       },
     },
   },
