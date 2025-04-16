@@ -19,6 +19,11 @@ vim.o.title = true
 -- fix noice formatting
 vim.opt.cmdheight = 1
 
+-- Remove ~ sign after EOF
+vim.opt.fillchars = {
+  eob = ' ',
+}
+
 -- Function to update the title with filename and current folder (project) name
 local function update_title()
   local file = vim.fn.expand '%:t' -- Current filename
@@ -67,6 +72,7 @@ vim.schedule(function()
     },
   }
 end)
+vim.opt.clipboard = 'unnamedplus'
 
 -- Cursor options
 vim.o.cursorline = false

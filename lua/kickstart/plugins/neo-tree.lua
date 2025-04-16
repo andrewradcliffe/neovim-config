@@ -18,5 +18,10 @@ return {
         hide_gitignored = false,
       },
     },
+    buffers = {
+      follow_current_file = {
+        enabled = true,
+      },
+    },
   },
 }

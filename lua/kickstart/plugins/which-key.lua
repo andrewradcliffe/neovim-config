@@ -69,6 +69,7 @@ return {
         { '<leader>o', group = '[O]bsidian' },
         { '<leader>b', group = '[B]uffer' },
         { '<leader>l', group = '[L}SP]' },
+        { '<leader>p', group = '[P]ython' },
       },
     },
   },

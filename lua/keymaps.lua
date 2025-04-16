@@ -1,6 +1,11 @@
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
+-- Disable F1 key
+vim.api.nvim_set_keymap('n', '<F1>', '<Nop>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('i', '<F1>', '<Nop>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('v', '<F1>', '<Nop>', { noremap = true, silent = true })
+
 -- Clear highlights on search when pressing <Esc> in normal mode
 --  See `:help hlsearch`
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
@@ -10,6 +15,12 @@ vim.keymap.set('n', '<leader>bd', vim.diagnostic.setloclist, { desc = 'Open [B]u
 
 -- LSP
 vim.keymap.set('n', '<leader>lr', '<cmd>LspRestart<cr>', { desc = '[R]estart LSP' })
+
+-- Python migration script boilerplate
+vim.keymap.set('n', '<leader>pm', '"mPGdd6gg$', { desc = '[P]ython [M]igration Script Boilerplate' })
+
+-- CSV
+vim.keymap.set('n', '<leader>tc', '<cmd>CsvViewToggle<cr>', { desc = '[T]oggle [C]sv Viewer' })
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
@@ -21,6 +32,10 @@ vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' }
 
 vim.keymap.set('v', '>', '>gv^')
 vim.keymap.set('v', '<', '<gv^')
+
+-- Disable default s behavior and set it for mini.surround
+vim.keymap.set('n', 's', '<Nop>') -- remove default 's' in normal mode
+vim.keymap.set('x', 's', '<Nop>') -- remove default 's' in visual mode
 
 -- TIP: Disable arrow keys in normal mode
 vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
@@ -42,16 +57,16 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 -- vim.keymap.set("n", "<C-S-j>", "<C-w>J", { desc = "Move window to the lower" })
 
 -- Yank to clipboard
-vim.keymap.set({ 'n', 'v' }, 'y', '"+y')
-vim.keymap.set({ 'n', 'v' }, 'Y', '"+Y')
-
+-- vim.keymap.set({ 'n', 'v' }, 'y', '"+y')
+-- vim.keymap.set({ 'n', 'v' }, 'Y', '"+Y')
+--
 -- Paste from clipboard
-vim.keymap.set({ 'n', 'v' }, 'p', '"+p')
-vim.keymap.set({ 'n', 'v' }, 'P', '"+P')
-
+-- vim.keymap.set({ 'n', 'v' }, 'p', '"+p')
+-- vim.keymap.set({ 'n', 'v' }, 'P', '"+P')
+--
 -- Delete to clipboard
-vim.keymap.set({ 'n', 'v' }, 'd', '"+d')
-vim.keymap.set({ 'n', 'v' }, 'D', '"+D')
+-- vim.keymap.set({ 'n', 'v' }, 'd', '"+d')
+-- vim.keymap.set({ 'n', 'v' }, 'D', '"+D')
 
 -- Obsidian and Markdown
 vim.keymap.set('n', '<leader>oc', function()
@@ -69,9 +84,10 @@ end, { desc = 'Open [d]aily note' })
 vim.keymap.set('n', '<leader>op', '<cmd>MarkdownPreviewToggle', { desc = 'Toggle markdown [p]review' })
 
 -- NeoTree
-vim.keymap.set('n', '<leader>e', function()
-  require('neo-tree.command').execute { toggle = true, dir = vim.loop.cwd() }
-end, { desc = 'Toggle Neo-tree' })
+-- vim.keymap.set('n', '<leader>e', function()
+--   require('neo-tree.command').execute { toggle = true, dir = vim.loop.cwd() }
+-- end, { desc = 'Toggle Neo-tree' })
+vim.keymap.set('n', '<leader>e', '<cmd>Neotree reveal toggle=true<cr>', { desc = 'Toggle neo-tree' })
 
 -- Alpha dashboard
 vim.keymap.set('n', '<leader>;', '<cmd>Alpha<cr>', { desc = 'Open dashboard' })
@@ -152,4 +168,13 @@ vim.api.nvim_create_autocmd('FileType', {
 vim.api.nvim_create_autocmd('TermOpen', {
   pattern = '*',
   command = 'setlocal nonumber norelativenumber',
+})
+
+-- Autocommand to toggle csv viewer on when entering a .csv buffer
+vim.api.nvim_create_autocmd('BufEnter', {
+  pattern = { '*.csv' },
+  callback = function()
+    vim.opt_local.scrolloff = 2
+    vim.cmd 'CsvViewEnable'
+  end,
 })
