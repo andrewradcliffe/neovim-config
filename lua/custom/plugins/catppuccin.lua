@@ -52,6 +52,15 @@ return {
     end,
   },
   config = function(_, opts)
+    local env = vim.fn.environ()
+    local term_program = (env.TERM_PROGRAM or ''):lower()
+
+    local transparent = true
+    if term_program:find 'wezterm' then
+      transparent = false
+    end
+
+    opts.transparent_background = transparent
     require('catppuccin').setup(opts)
     vim.cmd.colorscheme 'catppuccin'
   end,
