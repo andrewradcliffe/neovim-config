@@ -15,6 +15,7 @@ return {
   {
     -- Main LSP Configuration
     'neovim/nvim-lspconfig',
+    event = 'BufReadPre',
     dependencies = {
       -- Automatically install LSPs and related tools to stdpath for Neovim
       -- Mason must be loaded before its dependents so we need to set it up here.
@@ -272,7 +273,7 @@ return {
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
-        'pyright',
+        -- 'pyright',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -288,27 +289,47 @@ return {
             server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
             require('lspconfig')[server_name].setup(server)
           end,
-          ['pyright'] = function()
-            require('lspconfig').pyright.setup {
-              single_file_support = true,
-              capabilities = capabilities,
+          ['pylsp'] = function()
+            require('lspconfig').pylsp.setup {
               settings = {
-                pyright = {
-                  disableLanguageServices = false,
-                  disableOrganizeImports = false,
-                },
-                python = {
-                  analysis = {
-                    autoImportCompletions = true,
-                    autoSearchPaths = true,
-                    diagnosticMode = 'workspace', -- openFilesOnly, workspace
-                    typeCheckingMode = 'off',
-                    useLibraryCodeForTypes = true,
+                pylsp = {
+                  plugins = {
+                    pylsp_mypy = {
+                      enabled = true,
+                    },
+                    pycodestyle = {
+                      enabled = true,
+                      ignore = { 'E501', 'W503' },
+                    },
+                    mccabe = {
+                      enabled = false,
+                    },
                   },
                 },
               },
             }
           end,
+          -- ['pyright'] = function()
+          --   require('lspconfig').pyright.setup {
+          --     single_file_support = true,
+          --     capabilities = capabilities,
+          --     settings = {
+          --       pyright = {
+          --         disableLanguageServices = false,
+          --         disableOrganizeImports = false,
+          --       },
+          --       python = {
+          --         analysis = {
+          --           autoImportCompletions = true,
+          --           autoSearchPaths = true,
+          --           diagnosticMode = 'workspace', -- openFilesOnly, workspace
+          --           typeCheckingMode = 'off',
+          --           useLibraryCodeForTypes = true,
+          --         },
+          --       },
+          --     },
+          --   }
+          -- end,
         },
       }
     end,

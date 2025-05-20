@@ -9,7 +9,7 @@
 return {
   -- NOTE: Yes, you can install new plugins here!
   'mfussenegger/nvim-dap',
-  enabled = false,
+  enabled = true,
   -- NOTE: And you can specify dependencies as well
   dependencies = {
     -- Creates a beautiful debugger UI
@@ -24,6 +24,7 @@ return {
 
     -- Add your own debuggers here
     'leoluz/nvim-dap-go',
+    'mfussenegger/nvim-dap-python',
   },
   keys = {
     -- Basic debugging keymaps, feel free to change to your liking!
@@ -33,6 +34,13 @@ return {
         require('dap').continue()
       end,
       desc = 'Debug: Start/Continue',
+    },
+    {
+      '<S-F5>',
+      function()
+        require('dap').terminate()
+      end,
+      desc = 'Debug: Terminate Session',
     },
     {
       '<F1>',
@@ -145,5 +153,37 @@ return {
         detached = vim.fn.has 'win32' == 0,
       },
     }
+
+    -- Setup .NET Core Adapter
+    dap.adapters.coreclr = {
+      type = 'executable',
+      command = vim.fn.stdpath 'data' .. '/mason/bin/netcoredbg.cmd',
+      args = { '--interpreter=vscode' },
+    }
+
+    dap.configurations.cs = {
+      {
+        type = 'coreclr',
+        name = 'Launch - NetCore',
+        request = 'launch',
+        program = function()
+          return vim.fn.input('Path to dll: ', vim.fn.getcwd() .. '/bin/Debug/net6.0/', 'file')
+        end,
+      },
+      {
+        type = 'coreclr',
+        name = 'Attach - Pick Process',
+        request = 'attach',
+        processId = require('dap.utils').pick_process,
+      },
+    }
+
+    require('dap-python').setup 'py'
+    table.insert(dap.configurations.python, {
+      type = 'python',
+      request = 'launch',
+      name = 'Launch Flask server',
+      program = vim.fn.getcwd() .. '\\server.py',
+    })
   end,
 }

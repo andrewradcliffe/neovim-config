@@ -72,7 +72,6 @@ vim.schedule(function()
     },
   }
 end)
-vim.opt.clipboard = 'unnamedplus'
 
 -- Cursor options
 vim.o.cursorline = false
