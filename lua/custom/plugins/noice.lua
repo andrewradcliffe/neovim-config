@@ -22,6 +22,27 @@ return {
           ['cmp.entry.get_documentation'] = true, -- requires hrsh7th/nvim-cmp
         },
       },
+      messages = {
+        enabled = true,
+      },
+      routes = {
+        {
+          filter = {
+            event = 'msg_showmode',
+            find = 'recording @',
+          },
+          view = 'notify', -- change to "mini" if you prefer inline style
+        },
+        {
+          -- Show message from ':w'
+          filter = {
+            event = 'msg_show',
+            find = 'written',
+          },
+          opts = { skip = false },
+          view = 'notify',
+        },
+      },
       presets = {
         bottom_search = true, -- use a classic bottom cmdline for search
         command_palette = false, -- position the cmdline and popupmenu together
@@ -35,5 +56,13 @@ return {
       merge_duplicates = true,
       stages = 'slide',
     }
+
+    vim.api.nvim_create_autocmd('RecordingLeave', {
+      callback = function()
+        vim.schedule(function()
+          require 'notify'('Stopped recording', 'info', { title = 'Notification' })
+        end)
+      end,
+    })
   end,
 }

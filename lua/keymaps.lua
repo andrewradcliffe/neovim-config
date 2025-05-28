@@ -24,6 +24,9 @@ vim.keymap.set('n', '<leader>pm', '"mPGdd6gg$', { desc = '[P]ython [M]igration S
 -- CSV
 vim.keymap.set('n', '<leader>tc', '<cmd>CsvViewToggle<cr>', { desc = '[T]oggle [C]sv Viewer' })
 
+-- Select all in file
+vim.keymap.set('n', '<C-a>', 'ggVG;', { remap = true, desc = 'Select all'})
+
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
 -- is not what someone will guess without a bit more experience.
@@ -114,6 +117,12 @@ vim.keymap.set('n', '<leader>bc', function()
   -- Then delete the old one
   vim.cmd('bdelete ' .. current_buf)
 end, { desc = '[C]lose buffer', noremap = true, silent = true })
+
+vim.keymap.set('n', '<leader>ba', function()
+    vim.cmd('bufdo bd')
+    vim.cmd('Alpha')
+end, { desc = "Close [a]ll buffers" })
+vim.keymap.set('n', '<leader>bo', '<cmd>%bd|e#|bd#<cr>', { desc = "Close all but current buffer" })
 
 -- Terminal mappings
 vim.keymap.set({ 'n', 't' }, '<C-t>', '<cmd>ToggleTerm direction=float<cr>', { desc = 'Toggle floating terminal' })

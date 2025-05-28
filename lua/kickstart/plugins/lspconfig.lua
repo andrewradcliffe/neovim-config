@@ -110,7 +110,7 @@ return {
 
           -- Fuzzy find all the symbols in your current document.
           --  Symbols are things like variables, functions, types, etc.
-          map('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
+          -- map('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
 
           -- Fuzzy find all the symbols in your current workspace.
           --  Similar to document symbols, except searches over your entire project.
@@ -278,8 +278,9 @@ return {
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
       require('mason-lspconfig').setup {
+        automatic_enable = true, -- automatically enable servers that are installed
         ensure_installed = {}, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
-        automatic_installation = false,
+        -- automatic_installation = false,
         handlers = {
           function(server_name)
             local server = servers[server_name] or {}

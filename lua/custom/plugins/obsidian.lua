@@ -43,6 +43,9 @@ return {
         --     opts = { buffer = true, expr = true }
         -- },
       },
+        note_id_func = function(title)
+            return title
+        end,
     },
   },
   {
