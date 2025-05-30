@@ -21,14 +21,14 @@ return {
       -- Mason must be loaded before its dependents so we need to set it up here.
       -- NOTE: `opts = {}` is the same as calling `require('mason').setup({})`
       {
-        'williamboman/mason.nvim',
+        'mason-org/mason.nvim',
         opts = {
           ui = {
             border = 'rounded',
           },
         },
       },
-      'williamboman/mason-lspconfig.nvim',
+      'mason-org/mason-lspconfig.nvim',
       'WhoIsSethDaniel/mason-tool-installer.nvim',
 
       -- Useful status updates for LSP.
@@ -273,65 +273,31 @@ return {
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
-        -- 'pyright',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
+
+      vim.lsp.config('pylsp', {
+        settings = {
+          pylsp = {
+            plugins = {
+              pylsp_mypy = {
+                enabled = true,
+              },
+              pycodestyle = {
+                enabled = true,
+                ignore = { 'E501', 'W503' },
+              },
+              mccabe = {
+                enabled = false,
+              },
+            },
+          },
+        },
+      })
 
       require('mason-lspconfig').setup {
         automatic_enable = true, -- automatically enable servers that are installed
         ensure_installed = {}, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
-        -- automatic_installation = false,
-        handlers = {
-          function(server_name)
-            local server = servers[server_name] or {}
-            -- This handles overriding only values explicitly passed
-            -- by the server configuration above. Useful when disabling
-            -- certain features of an LSP (for example, turning off formatting for ts_ls)
-            server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-            require('lspconfig')[server_name].setup(server)
-          end,
-          ['pylsp'] = function()
-            require('lspconfig').pylsp.setup {
-              settings = {
-                pylsp = {
-                  plugins = {
-                    pylsp_mypy = {
-                      enabled = true,
-                    },
-                    pycodestyle = {
-                      enabled = true,
-                      ignore = { 'E501', 'W503' },
-                    },
-                    mccabe = {
-                      enabled = false,
-                    },
-                  },
-                },
-              },
-            }
-          end,
-          -- ['pyright'] = function()
-          --   require('lspconfig').pyright.setup {
-          --     single_file_support = true,
-          --     capabilities = capabilities,
-          --     settings = {
-          --       pyright = {
-          --         disableLanguageServices = false,
-          --         disableOrganizeImports = false,
-          --       },
-          --       python = {
-          --         analysis = {
-          --           autoImportCompletions = true,
-          --           autoSearchPaths = true,
-          --           diagnosticMode = 'workspace', -- openFilesOnly, workspace
-          --           typeCheckingMode = 'off',
-          --           useLibraryCodeForTypes = true,
-          --         },
-          --       },
-          --     },
-          --   }
-          -- end,
-        },
       }
     end,
   },
