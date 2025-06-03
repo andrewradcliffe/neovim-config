@@ -24,6 +24,9 @@ vim.keymap.set('n', '<leader>pm', '"mPGdd6gg$', { desc = '[P]ython [M]igration S
 -- CSV
 vim.keymap.set('n', '<leader>tc', '<cmd>CsvViewToggle<cr>', { desc = '[T]oggle [C]sv Viewer' })
 
+-- diffview commands
+vim.keymap.set('n', '<leader>gd', '<cmd>DiffviewOpen<cr>', { desc = 'Open [G]it [D]iff'})
+
 -- Select all in file
 vim.keymap.set('n', '<C-a>', 'ggVG;', { remap = true, desc = 'Select all'})
 
