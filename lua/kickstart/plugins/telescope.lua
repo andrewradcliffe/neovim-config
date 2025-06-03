@@ -56,16 +56,46 @@ return {
         -- You can put your default mappings / updates / etc. in here
         --  All the info you're looking for is in `:help telescope.setup()`
         --
-        -- defaults = {
-        --   mappings = {
-        --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
-        --   },
-        --   file_ignore_patterns = { ".git/", ".venv/" }
-        -- },
+        defaults = {
+          mappings = {
+            i = { ['<c-enter>'] = 'to_fuzzy_refine' },
+          },
+          file_ignore_patterns = {
+            '%.git/',
+            '%.venv/',
+            '__pycache__/',
+            'node_modules/',
+            '%.xlsx$',
+            '%.xls$',
+          },
+        },
         pickers = {
           find_files = {
             hidden = true,
-            no_ignore = true,
+            no_ignore = false,
+            find_command = {
+              'fd',
+              '--type',
+              'f',
+              '--strip-cwd-prefix',
+              '--hidden',
+              '--no-ignore',
+              '--exclude',
+              '.git',
+              '--exclude',
+              '.venv',
+              '--exclude',
+              'node_modules',
+              '--exclude',
+              '__pycache__',
+              '--exclude',
+              '*.xlsx',
+              '--exclude',
+              '*.xls',
+            },
+          },
+          oldfiles = {
+            only_cwd = true,
           },
         },
         extensions = {
