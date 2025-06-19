@@ -273,6 +273,12 @@ return {
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
+        'python-language-server',
+        'bash-language-server',
+        'lua-language-server',
+        'powershell-editor-services',
+        'netcoredbg',
+        'rust-analyzer',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -285,11 +291,34 @@ return {
               },
               pycodestyle = {
                 enabled = true,
-                ignore = { 'E501', 'W503' },
+                ignore = { 'E501', 'W503', 'E302' },
               },
               mccabe = {
                 enabled = false,
               },
+              rope_autoimport = {
+                enabled = false,
+              }
+            },
+          },
+        },
+      })
+
+      vim.lsp.config('pyright', {
+        single_file_support = false,
+        capabilities = capabilities,
+        settings = {
+          pyright = {
+            disableLanguageServices = false,
+            disableOrganizeImports = false,
+          },
+          python = {
+            analysis = {
+              autoImportCompletions = true,
+              autoSearchPaths = true,
+              diagnosticMode = 'openFilesOnly', -- openFilesOnly, workspace
+              typeCheckingMode = 'off',
+              useLibraryCodeForTypes = true,
             },
           },
         },
