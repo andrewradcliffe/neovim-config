@@ -160,6 +160,12 @@ vim.keymap.set('n', '<leader>wc', function()
     vim.fn.jobstart({ 'code', dir, '--goto', goto_arg }, { detach = true })
 end, { desc = 'Open VSCode at project root and file' })
 
+vim.keymap.set('n', '<leader>E', function()
+    local dir = vim.fn.expand('%:p:h')
+    local path = dir:gsub('/', '\\')
+    os.execute('powershell.exe Start-Process explorer.exe -ArgumentList \'"' .. path .. '"\'')
+end, { desc = "Open [E]xplorer in current file directory"})
+
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
