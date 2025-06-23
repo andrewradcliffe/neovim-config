@@ -273,7 +273,7 @@ return {
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
-        'python-language-server',
+        'python-lsp-server',
         'bash-language-server',
         'lua-language-server',
         'powershell-editor-services',
