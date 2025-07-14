@@ -20,7 +20,7 @@ vim.keymap.set('n', '<leader>bd', vim.diagnostic.setloclist, { desc = 'Open [B]u
 vim.keymap.set('n', '<leader>lr', '<cmd>LspRestart<cr>', { desc = '[R]estart LSP' })
 
 -- Python migration script boilerplate
-vim.keymap.set('n', '<leader>pm', '"mPGdd6gg$', { desc = '[P]ython [M]igration Script Boilerplate' })
+vim.keymap.set('n', '<leader>pm', '"mPGdd9gg$', { desc = '[P]ython [M]igration Script Boilerplate' })
 
 -- CSV
 vim.keymap.set('n', '<leader>tc', '<cmd>CsvViewToggle<cr>', { desc = '[T]oggle [C]sv Viewer' })
@@ -45,6 +45,12 @@ vim.keymap.set('v', '<', '<gv^')
 -- Disable default s behavior and set it for mini.surround
 vim.keymap.set('n', 's', '<Nop>') -- remove default 's' in normal mode
 vim.keymap.set('x', 's', '<Nop>') -- remove default 's' in visual mode
+
+-- resize buffer
+vim.keymap.set("n", "<C-Up>", "<Cmd>resize -5<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<C-Down>", "<Cmd>resize +5<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<C-Left>", "<Cmd>vertical resize +5<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<C-Right>", "<Cmd>vertical resize -5<CR>", { noremap = true, silent = true })
 
 -- TIP: Disable arrow keys in normal mode
 vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')

@@ -291,7 +291,7 @@ return {
               },
               pycodestyle = {
                 enabled = true,
-                ignore = { 'E501', 'W503', 'E302' },
+                ignore = { 'E501', 'W503', 'E302', 'F403', 'F405' },
               },
               mccabe = {
                 enabled = false,
