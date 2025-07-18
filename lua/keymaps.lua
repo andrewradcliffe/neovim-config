@@ -28,6 +28,8 @@ vim.keymap.set('n', '<leader>tc', '<cmd>CsvViewToggle<cr>', { desc = '[T]oggle [
 -- diffview commands
 vim.keymap.set('n', '<leader>gd', '<cmd>DiffviewOpen<cr>', { desc = 'Open [G]it [D]iff' })
 
+vim.keymap.set('n', '<leader>z', '<cmd>ZenMode<cr>', { desc = 'Toggle [Z]en Mode'})
+
 -- Select all in file
 -- vim.keymap.set('n', '<C-a>', 'ggVG;', { remap = true, desc = 'Select all'})
 
@@ -47,8 +49,8 @@ vim.keymap.set('n', 's', '<Nop>') -- remove default 's' in normal mode
 vim.keymap.set('x', 's', '<Nop>') -- remove default 's' in visual mode
 
 -- resize buffer
-vim.keymap.set("n", "<C-Up>", "<Cmd>resize -5<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<C-Down>", "<Cmd>resize +5<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<C-Up>", "<Cmd>resize +5<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<C-Down>", "<Cmd>resize -5<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-Left>", "<Cmd>vertical resize +5<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-Right>", "<Cmd>vertical resize -5<CR>", { noremap = true, silent = true })
 
