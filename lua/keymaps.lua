@@ -7,7 +7,7 @@ vim.api.nvim_set_keymap('i', '<F1>', '<Nop>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('v', '<F1>', '<Nop>', { noremap = true, silent = true })
 
 vim.keymap.set('n', 'ycc', 'yygccp;', { remap = true, desc = 'Duplicate line' })
-vim.keymap.set('n', '<C-/>', 'gcc', { remap = true, desc = 'Comment out line' })
+vim.keymap.set('n', '<M-/>', 'gcc', { remap = true, desc = 'Comment line (alias)'})
 
 -- Clear highlights on search when pressing <Esc> in normal mode
 --  See `:help hlsearch`

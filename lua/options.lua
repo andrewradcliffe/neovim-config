@@ -120,3 +120,9 @@ vim.opt.scrolloff = 0
 -- instead raise a dialog asking if you wish to save the current file(s)
 -- See `:help 'confirm'`
 vim.opt.confirm = true
+
+vim.filetype.add({
+    extension = {
+        razor = "razor",
+    }
+})
