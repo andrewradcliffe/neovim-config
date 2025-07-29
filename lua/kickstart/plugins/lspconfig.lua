@@ -286,6 +286,7 @@ return {
                             },
                             pycodestyle = {
                                 enabled = true,
+                                -- enabled = false,
                                 ignore = { 'E501', 'W503', 'F403', 'F405' },
                             },
                             mccabe = {
@@ -294,6 +295,15 @@ return {
                             rope_autoimport = {
                                 enabled = false,
                             },
+                            -- flake8 = {
+                            --     enabled = false,
+                            -- },
+                            -- pyflakes = {
+                            --     enabled = false,
+                            -- },
+                            -- pylint = {
+                            --     enabled = true,
+                            -- },
                         },
                     },
                 },
