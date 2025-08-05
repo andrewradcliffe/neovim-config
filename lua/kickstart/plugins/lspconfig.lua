@@ -16,10 +16,6 @@ return {
         'jlcrochet/vim-razor',
         ft = 'razor',
     },
-    -- {
-    --     'Hoffs/omnisharp-extended-lsp.nvim',
-    --     lazy = true,
-    -- },
     {
         'WhoIsSethDaniel/mason-tool-installer.nvim',
         dependencies = { 'mason-org/mason.nvim' },

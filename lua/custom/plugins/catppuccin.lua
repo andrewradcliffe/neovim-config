@@ -1,12 +1,13 @@
 return {
     'catppuccin/nvim',
+    commit = "cb5665990a797b102715188e73c44c3931b3b42e",
     -- enabled = false,
     lazy = false,
     priority = 1000,
     name = 'catppuccin',
     opts = {
         flavour = 'mocha',
-        transparent_background = true,
+        transparent_background = false,
         -- color_overrides = {
         --     mocha = {
         --         base = '#000000',
@@ -50,7 +51,7 @@ return {
                 style = "nvchad"
             },
             treesitter = true,
-            treesitter_context = true,
+            treesitter_context = false,
             which_key = true,
         },
         custom_highlights = function(colors)
@@ -65,15 +66,16 @@ return {
         end,
     },
     config = function(_, opts)
-        local env = vim.fn.environ()
-        local term_program = (env.TERM_PROGRAM or ''):lower()
+        -- local env = vim.fn.environ()
+        -- local term_program = (env.TERM_PROGRAM or ''):lower()
+        --
+        -- local transparent = true
+        -- if term_program:find 'wezterm' then
+        --     transparent = false
+        -- end
+        --
+        -- opts.transparent_background = transparent
 
-        local transparent = true
-        if term_program:find 'wezterm' then
-            transparent = false
-        end
-
-        opts.transparent_background = transparent
         require('catppuccin').setup(opts)
         vim.cmd.colorscheme 'catppuccin'
     end,

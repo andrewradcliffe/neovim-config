@@ -18,7 +18,7 @@ return {
             -- refer to the configuration section below
             window = {
                 backdrop = 0,
-                width = 120,
+                width = 150,
             },
             plugins = {
                 gitsigns = { enabled = true },
