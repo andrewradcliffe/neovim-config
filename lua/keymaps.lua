@@ -21,8 +21,9 @@ end, { desc = "Copy relative path to clipboard" })
 --  See `:help hlsearch`
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 
--- Open Oil.nvim
-vim.keymap.set("n", "<leader>o", "<cmd>Oil<cr>")
+-- Open file tree (Oil.nvim / neo-tree)
+vim.keymap.set("n", "<leader>e", "<cmd>Oil<cr>")
+-- vim.keymap.set("n", "<leader>e", "<cmd>Neotree reveal toggle=true<cr>", { desc = "Toggle neo-tree" })
 
 -- Diagnostic keymaps
 vim.keymap.set("n", "<leader>bd", vim.diagnostic.setloclist, { desc = "Open [B]uffer [D]iagnostics" })
@@ -31,7 +32,7 @@ vim.keymap.set("n", "<leader>bd", vim.diagnostic.setloclist, { desc = "Open [B]u
 vim.keymap.set("n", "<leader>lr", "<cmd>LspRestart<cr>", { desc = "[R]estart LSP" })
 
 -- Python migration script boilerplate
-vim.keymap.set("n", "<leader>pm", '"mPGdd9gg$', { desc = "[P]ython [M]igration Script Boilerplate" })
+vim.keymap.set("n", "<leader>pm", '"mPGdd10gg$', { desc = "[P]ython [M]igration Script Boilerplate" })
 
 -- CSV
 vim.keymap.set("n", "<leader>tc", "<cmd>CsvViewToggle<cr>", { desc = "[T]oggle [C]sv Viewer" })
@@ -112,12 +113,6 @@ vim.keymap.set("n", "<leader>od", function()
 end, { desc = "Open [d]aily note" })
 vim.keymap.set("n", "<leader>op", "<cmd>MarkdownPreviewToggle<cr>", { desc = "Toggle markdown [p]review" })
 
--- NeoTree
--- vim.keymap.set('n', '<leader>e', function()
---   require('neo-tree.command').execute { toggle = true, dir = vim.loop.cwd() }
--- end, { desc = 'Toggle Neo-tree' })
-vim.keymap.set("n", "<leader>e", "<cmd>Neotree reveal toggle=true<cr>", { desc = "Toggle neo-tree" })
-
 -- Alpha dashboard
 vim.keymap.set("n", "<leader>;", "<cmd>Alpha<cr>", { desc = "Open dashboard" })
 
@@ -150,8 +145,7 @@ vim.keymap.set("n", "<leader>bo", "<cmd>%bd|e#|bd#<cr>", { desc = "Close all but
 
 -- Terminal mappings
 vim.keymap.set({ "n", "t" }, "<C-t>", "<cmd>ToggleTerm direction=float<cr>", { desc = "Toggle floating terminal" })
-vim.keymap.set({ "n", "t" }, "<C-1>", "<cmd>ToggleTerm direction=horizontal<cr>", { desc = "Toggle horizontal terminal" })
-vim.keymap.set({ "n", "t" }, "<C-2>", "<cmd>ToggleTerm direction=vertical<cr>", { desc = "Toggle vertical terminal" })
+-- vim.keymap.set({ "n", "t" }, "<C-T>", "<cmd>ToggleTerm direction=tab<cr>", { desc = "Toggle Terminal in Tab" })
 
 -- Open VSCode at current file
 vim.keymap.set("n", "<leader>wc", function()
@@ -243,7 +237,11 @@ vim.api.nvim_create_autocmd("BufEnter", {
     pattern = { "*.csv" },
     callback = function()
         vim.opt_local.scrolloff = 2
-        vim.cmd("CsvViewEnable")
+
+        local buf = vim.api.nvim_get_current_buf()
+        if (not require("csvview").is_enabled(buf)) then
+            vim.cmd("CsvViewEnable")
+        end
     end,
 })
 
