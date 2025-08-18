@@ -333,17 +333,12 @@ return {
                                 enabled = false,
                             },
                             rope_autoimport = {
-                                enabled = false,
+                                enabled = true,
+                                python_path = "C:/Repos/TVA-API/.venv/Scripts/python.exe"
                             },
-                            -- flake8 = {
-                            --     enabled = false,
-                            -- },
-                            -- pyflakes = {
-                            --     enabled = false,
-                            -- },
-                            -- pylint = {
-                            --     enabled = true,
-                            -- },
+                            isort = {
+                                enabled = true,
+                            },
                         },
                     },
                 },
