@@ -64,6 +64,7 @@ return {
                             ['<c-enter>'] = 'to_fuzzy_refine',
                             ['<Esc>'] = actions.close,
                             ['<C-c>'] = actions.close,
+                            ['<C-d>'] = actions.delete_buffer
                         },
                     },
                     file_ignore_patterns = {
@@ -123,7 +124,7 @@ return {
 
             -- See `:help telescope.builtin`
             local builtin = require 'telescope.builtin'
-            vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
+            vim.keymap.set('n', '<leader>sH', builtin.help_tags, { desc = '[S]earch [H]elp' })
             vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
             vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
             -- vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
