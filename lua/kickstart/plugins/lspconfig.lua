@@ -34,6 +34,7 @@ return {
 
             vim.lsp.config("roslyn", {
                 cmd = cmd,
+                ft = { "cs", "razor" },
                 handlers = require("rzls.roslyn_handlers"),
                 settings = {
                     ["csharp|inlay_hints"] = {
@@ -304,7 +305,9 @@ return {
             local ensure_installed = vim.tbl_keys(servers or {})
             vim.list_extend(ensure_installed, {
                 "stylua", -- Used to format Lua code
-                "python-lsp-server",
+                -- "python-lsp-server",
+                "pyright",
+                "ruff",
                 "bash-language-server",
                 "lua-language-server",
                 "powershell-editor-services",
@@ -322,7 +325,7 @@ return {
                     pylsp = {
                         plugins = {
                             pylsp_mypy = {
-                                enabled = true,
+                                enabled = false,
                             },
                             pycodestyle = {
                                 enabled = true,
@@ -334,10 +337,7 @@ return {
                             },
                             rope_autoimport = {
                                 enabled = true,
-                                python_path = "C:/Repos/TVA-API/.venv/Scripts/python.exe"
-                            },
-                            isort = {
-                                enabled = true,
+                                python_path = "C:/Repos/TVA-API/.venv/Scripts/python.exe",
                             },
                         },
                     },
@@ -364,10 +364,29 @@ return {
                 },
             })
 
+            vim.lsp.config("html_ls", {
+                ft = { "html", "razor" },
+            })
+
             require("mason-lspconfig").setup({
                 automatic_enable = true, -- automatically enable servers that are installed
                 automatic_installation = true,
                 ensure_installed = {}, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
+            })
+
+            vim.api.nvim_create_autocmd("LspAttach", {
+                group = vim.api.nvim_create_augroup("lsp_attach_disable_ruff_hover", { clear = true }),
+                callback = function(args)
+                    local client = vim.lsp.get_client_by_id(args.data.client_id)
+                    if client == nil then
+                        return
+                    end
+                    if client.name == "ruff" then
+                        -- Disable hover in favor of Pyright
+                        client.server_capabilities.hoverProvider = false
+                    end
+                end,
+                desc = "LSP: Disable hover capability from Ruff",
             })
         end,
     },
