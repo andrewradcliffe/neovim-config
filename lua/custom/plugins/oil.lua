@@ -4,18 +4,29 @@ return {
     ---@type oil.SetupOpts
     opts = {
         default_file_explorer = true,
-        delete_to_trash = true,
-        skip_confirm_for_simple_edits = true,
+        delete_to_trash = false,
+        -- skip_confirm_for_simple_edits = true,
         view_options = {
             show_hidden = true,
             natural_order = "fast",
-            -- is_always_hidden = function(name, _)
-            --     return name == ".git" or name == ".venv"
-            -- end,
             win_options = {
                 wrap = true,
             },
-        }
+        },
+        columns = {
+            "icon",
+            -- "permissions",
+            -- "size",
+            -- "mtime",
+        },
+        keymaps = {
+            ["<C-s>"] = { nil },
+            ["<C-h>"] = { nil },
+            ["<C-l>"] = { nil },
+            ["<C-v>"] = { "actions.select", opts = { vertical = true } },
+            ["<C-x>"] = { "actions.select", opts = { horizontal = true } },
+            ["<C-r>"] = "actions.refresh",
+        },
     },
     -- Optional dependencies
     -- dependencies = { { "echasnovski/mini.icons", opts = {} } },

@@ -102,9 +102,10 @@ end
 local buttons = {
   type = 'group',
   val = {
-    button('SPC s f', ' 󰈞  > Find file'),
-    button('SPC s .', ' 󰤘  > Recently opened files'),
-    button('SPC s g', ' 󰊄  > Grep text'),
+    button('f', ' 󰈞  > Find file', '<cmd>Telescope find_files<cr>'),
+    button('r', ' 󰤘  > Recently opened files', '<cmd>Telescope oldfiles<cr>'),
+    button('t', ' 󰊄  > Grep text', '<cmd>Telescope live_grep<cr>'),
+    button('s', '   > Restore session', ":lua require('persistence').load()<CR>"),
     button('e', '   > New file', '<cmd>ene <CR>'),
     button('q', ' 󰗼  > Quit', '<cmd>:qa<cr>'),
   },

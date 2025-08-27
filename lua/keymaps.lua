@@ -27,12 +27,38 @@ vim.keymap.set("n", "<leader>e", "<cmd>Oil<cr>")
 
 -- Diagnostic keymaps
 vim.keymap.set("n", "<leader>bd", vim.diagnostic.setloclist, { desc = "Open [B]uffer [D]iagnostics" })
+vim.keymap.set("n", "<leader>td", function()
+    local bufnr = vim.api.nvim_get_current_buf()
+    vim.diagnostic.enable(not vim.diagnostic.is_enabled(), {bufnr = bufnr})
+end, { desc = "Toggle buffer diagnostics" })
 
 -- LSP
 vim.keymap.set("n", "<leader>lr", "<cmd>LspRestart<cr>", { desc = "[R]estart LSP" })
 
 -- Python migration script boilerplate
-vim.keymap.set("n", "<leader>pm", '"mPGdd10gg$', { desc = "[P]ython [M]igration Script Boilerplate" })
+-- vim.keymap.set("n", "<leader>pm", '"mPGdd10gg$', { desc = "[P]ython [M]igration Script Boilerplate" })
+vim.keymap.set("n", "<leader>pm", function()
+    vim.api.nvim_paste([[
+from navtor.db import connect_mongo
+from navtor.models.report import Report
+from navtor.models.vessel import Vessel
+import pandas as pd
+
+connect_mongo()
+
+
+def main():
+    return
+
+
+if __name__ == "__main__":
+    main()
+    ]], false, -1)
+
+    vim.cmd([[
+        norm Gdd10gg$
+    ]])
+end, { desc = "[P]ython [M]igration Script Boilerplate" })
 
 -- CSV
 vim.keymap.set("n", "<leader>tc", "<cmd>CsvViewToggle<cr>", { desc = "[T]oggle [C]sv Viewer" })
@@ -144,8 +170,10 @@ end, { desc = "Close [a]ll buffers" })
 vim.keymap.set("n", "<leader>bo", "<cmd>%bd|e#|bd#<cr>", { desc = "Close all but current buffer" })
 
 -- Terminal mappings
-vim.keymap.set({ "n", "t" }, "<C-t>", "<cmd>ToggleTerm direction=float<cr>", { desc = "Toggle floating terminal" })
--- vim.keymap.set({ "n", "t" }, "<C-T>", "<cmd>ToggleTerm direction=tab<cr>", { desc = "Toggle Terminal in Tab" })
+vim.keymap.set({ "n", "t" }, "<C-t>h", "<cmd>ToggleTerm direction=horizontal size=15<cr>", { desc = "Toggle horizontal terminal" })
+vim.keymap.set({ "n", "t" }, "<C-t>v", "<cmd>ToggleTerm direction=vertical size=100<cr>", { desc = "Toggle vertical terminal" })
+vim.keymap.set({ "n", "t" }, "<C-t>f", "<cmd>ToggleTerm direction=float<cr>", { desc = "Toggle floating terminal" })
+vim.keymap.set({ "n", "t" }, "<C-t>t", "<cmd>ToggleTerm direction=tab<cr>", { desc = "Toggle Terminal in Tab" })
 
 -- Open VSCode at current file
 vim.keymap.set("n", "<leader>wc", function()
@@ -183,33 +211,6 @@ end, { desc = "Open [E]xplorer in current file directory" })
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
--- Toggle lazygit
--- function _toggle_lazygit()
---   local Terminal = require("toggleterm.terminal").Terminal
---   local lazygit = Terminal:new({
---     cmd = "lazygit",
---     hidden = true,
---     direction = "float",
---     float_opts = {
---       border = "none",
---       width = 100000,
---       height = 100000,
---       zindex = 200,
---     },
---     on_open = function(_)
---       vim.cmd "startinsert!"
---     end,
---     on_close = function(_) end,
---     count = 99,
---   })
---   lazygit:toggle()
--- end
---
--- vim.keymap.set('n', '<leader>gg', '<cmd>lua _toggle_lazygit()<cr>', { desc = 'Open lazygit', noremap = true, silent = true, })
-
--- Highlight when yanking (copying) text
---  Try it with `yap` in normal mode
---  See `:help vim.highlight.on_yank()`
 vim.api.nvim_create_autocmd("TextYankPost", {
     desc = "Highlight when yanking (copying) text",
     group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),
@@ -234,13 +235,21 @@ vim.api.nvim_create_autocmd("TermOpen", {
 })
 
 -- Autocommand to toggle csv viewer on when entering a .csv buffer
-vim.api.nvim_create_autocmd("BufEnter", {
-    pattern = { "*.csv" },
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = { "csv" },
     callback = function()
+        local file_size = vim.fn.getfsize(vim.fn.expand("<afile>"))
+        local limit = 50 * 1024 * 1024 -- 50 MB
+        local buf = vim.api.nvim_get_current_buf()
+
+        if file_size > limit then
+            vim.notify("Skipping csvview.nvim: file too large (" .. vim.fn.pretty_size(file_size) .. ")", vim.log.levels.WARN)
+            return
+        end
+
         vim.opt_local.scrolloff = 2
 
-        local buf = vim.api.nvim_get_current_buf()
-        if (not require("csvview").is_enabled(buf)) then
+        if not require("csvview").is_enabled(buf) then
             vim.cmd("CsvViewEnable")
         end
     end,

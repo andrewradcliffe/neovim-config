@@ -63,6 +63,7 @@ return {
                 FloatBorder = { fg = 'white', bg = 'none' },
                 AlphaHeader = { fg = colors.pink, bg = 'none' },
                 NotifyBackground = { fg = colors.none or '#00000000' },
+                TreesitterContextLineNumber = { fg = '#6c7086', bold = true },
             }
         end,
     },
