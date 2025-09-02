@@ -29,7 +29,7 @@ vim.keymap.set("n", "<leader>e", "<cmd>Oil<cr>")
 vim.keymap.set("n", "<leader>bd", vim.diagnostic.setloclist, { desc = "Open [B]uffer [D]iagnostics" })
 vim.keymap.set("n", "<leader>td", function()
     local bufnr = vim.api.nvim_get_current_buf()
-    vim.diagnostic.enable(not vim.diagnostic.is_enabled(), {bufnr = bufnr})
+    vim.diagnostic.enable(not vim.diagnostic.is_enabled(), { bufnr = bufnr })
 end, { desc = "Toggle buffer diagnostics" })
 
 -- LSP
@@ -38,7 +38,8 @@ vim.keymap.set("n", "<leader>lr", "<cmd>LspRestart<cr>", { desc = "[R]estart LSP
 -- Python migration script boilerplate
 -- vim.keymap.set("n", "<leader>pm", '"mPGdd10gg$', { desc = "[P]ython [M]igration Script Boilerplate" })
 vim.keymap.set("n", "<leader>pm", function()
-    vim.api.nvim_paste([[
+    vim.api.nvim_paste(
+        [[
 from navtor.db import connect_mongo
 from navtor.models.report import Report
 from navtor.models.vessel import Vessel
@@ -53,7 +54,10 @@ def main():
 
 if __name__ == "__main__":
     main()
-    ]], false, -1)
+    ]],
+        false,
+        -1
+    )
 
     vim.cmd([[
         norm Gdd10gg$
@@ -235,15 +239,15 @@ vim.api.nvim_create_autocmd("TermOpen", {
 })
 
 -- Autocommand to toggle csv viewer on when entering a .csv buffer
-vim.api.nvim_create_autocmd("FileType", {
-    pattern = { "csv" },
+vim.api.nvim_create_autocmd("BufEnter", {
+    pattern = { "*.csv" },
     callback = function()
         local file_size = vim.fn.getfsize(vim.fn.expand("<afile>"))
         local limit = 50 * 1024 * 1024 -- 50 MB
         local buf = vim.api.nvim_get_current_buf()
 
         if file_size > limit then
-            vim.notify("Skipping csvview.nvim: file too large (" .. vim.fn.pretty_size(file_size) .. ")", vim.log.levels.WARN)
+            vim.notify("Skipping csvview.nvim: file too large (" .. file_size / 1024 / 1024 .. " MB)", vim.log.levels.WARN)
             return
         end
 
@@ -252,6 +256,21 @@ vim.api.nvim_create_autocmd("FileType", {
         if not require("csvview").is_enabled(buf) then
             vim.cmd("CsvViewEnable")
         end
+    end,
+})
+
+vim.api.nvim_create_autocmd({ "DiagnosticChanged" }, {
+    callback = function()
+        local mode = vim.api.nvim_get_mode().mode
+        if mode == "n" then
+            vim.diagnostic.setloclist({ open = false }) -- keeps list updated without reopening
+        end
+    end,
+})
+
+vim.api.nvim_create_autocmd("CursorHold", {
+    callback = function()
+        vim.diagnostic.open_float(nil, { focus = false })
     end,
 })
 

@@ -232,28 +232,31 @@ return {
             vim.diagnostic.config({
                 severity_sort = true,
                 float = { border = "rounded", source = "if_many" },
-                underline = { severity = vim.diagnostic.severity.ERROR },
+                underline = { severity = { min = vim.diagnostic.severity.WARN } },
                 signs = vim.g.have_nerd_font and {
                     text = {
-                        [vim.diagnostic.severity.ERROR] = "󰅚 ",
-                        [vim.diagnostic.severity.WARN] = "󰀪 ",
-                        [vim.diagnostic.severity.INFO] = "󰋽 ",
-                        [vim.diagnostic.severity.HINT] = "󰌶 ",
+                        [vim.diagnostic.severity.ERROR] = "E ",
+                        [vim.diagnostic.severity.WARN] = "W ",
+                        [vim.diagnostic.severity.INFO] = "I ",
+                        [vim.diagnostic.severity.HINT] = "H ",
                     },
                 } or {},
-                virtual_text = {
-                    source = "if_many",
-                    spacing = 2,
-                    format = function(diagnostic)
-                        local diagnostic_message = {
-                            [vim.diagnostic.severity.ERROR] = diagnostic.message,
-                            [vim.diagnostic.severity.WARN] = diagnostic.message,
-                            [vim.diagnostic.severity.INFO] = diagnostic.message,
-                            [vim.diagnostic.severity.HINT] = diagnostic.message,
-                        }
-                        return diagnostic_message[diagnostic.severity]
-                    end,
-                },
+                update_in_insert = false,
+                virtual_text = false,
+                -- virtual_text = {
+                --     prefix = "● "
+                    -- source = "if_many",
+                    -- spacing = 1,
+                    -- format = function(diagnostic)
+                    --     local diagnostic_message = {
+                    --         [vim.diagnostic.severity.ERROR] = diagnostic.message,
+                    --         [vim.diagnostic.severity.WARN] = diagnostic.message,
+                    --         [vim.diagnostic.severity.INFO] = diagnostic.message,
+                    --         [vim.diagnostic.severity.HINT] = diagnostic.message,
+                    --     }
+                    --     return diagnostic_message[diagnostic.severity]
+                    -- end,
+                -- },
             })
 
             -- LSP servers and clients are able to communicate to each other what features they support.
