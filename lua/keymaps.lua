@@ -12,9 +12,14 @@ vim.keymap.set("n", "ycc", "yygccp;", { remap = true, desc = "Duplicate line" })
 vim.keymap.set("n", "<M-/>", "gcc", { remap = true, desc = "Comment line (alias)" })
 
 vim.keymap.set("n", "<leader>bf", function()
-    local path = vim.fn.expand("%") -- relative path to current file
-    vim.fn.setreg("+", path) -- copy to system clipboard (register +)
-    vim.notify("Copied relative path: " .. path)
+    local full_path = vim.api.nvim_buf_get_name(0)
+    local cwd = vim.fn.getcwd()
+
+    local rel_path = vim.fn.fnamemodify(full_path, ":." .. cwd)
+    rel_path = rel_path:gsub("\\", "/")
+
+    vim.fn.setreg("+", rel_path) -- copy to system clipboard (register +)
+    vim.notify("Copied relative path: " .. rel_path)
 end, { desc = "Copy relative path to clipboard" })
 
 -- Clear highlights on search when pressing <Esc> in normal mode

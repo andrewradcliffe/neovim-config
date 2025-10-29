@@ -24,6 +24,11 @@ vim.opt.fillchars = {
   eob = ' ',
 }
 
+-- Format options
+-- This is the default value minus 'cro' which automatically adds comments
+-- on the next line
+vim.o.formatoptions = "jql"
+
 -- Function to update the title with filename and current folder (project) name
 local function update_title()
   local file = vim.fn.expand '%:t' -- Current filename
