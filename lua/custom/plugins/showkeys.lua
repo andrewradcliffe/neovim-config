@@ -3,9 +3,10 @@ return {
         'nvzone/showkeys',
         cmd = 'ShowkeysToggle',
         opts = {
-            timeout = 3,
-            maxkeys = 5,
-            excluded_modes = { 'i' },
+            timeout = 5,
+            maxkeys = 10,
+            show_count = true,
+            position = "bottom-center"
         },
     },
 }

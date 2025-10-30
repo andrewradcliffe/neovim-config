@@ -105,7 +105,7 @@ local buttons = {
     button('f', ' 󰈞  > Find file', '<cmd>Telescope find_files<cr>'),
     button('r', ' 󰤘  > Recently opened files', '<cmd>Telescope oldfiles<cr>'),
     button('t', ' 󰊄  > Grep text', '<cmd>Telescope live_grep<cr>'),
-    button('s', '   > Restore session', ":lua require('persistence').load()<CR>"),
+    button('s', ' 󰦛  > Restore session', ":lua require('persistence').load()<CR>"),
     button('e', '   > New file', '<cmd>ene <CR>'),
     button('q', ' 󰗼  > Quit', '<cmd>:qa<cr>'),
   },
