@@ -82,12 +82,12 @@ return {
         --
         -- opts.transparent_background = transparent
 
-        vim.api.nvim_set_hl(0, "DiagnosticUnderlineError", { underline = true, sp = "#F28FAD" })
-        vim.api.nvim_set_hl(0, "DiagnosticUnderlineWarn", { underline = true, sp = "#FAE3B0" })
-        vim.api.nvim_set_hl(0, "DiagnosticUnderlineInfo", { underline = true, sp = "#89DCEB" })
-        vim.api.nvim_set_hl(0, "DiagnosticUnderlineHint", { underline = true, sp = "#B5E8E0" })
-
-        require("catppuccin").setup(opts)
-        vim.cmd.colorscheme("catppuccin")
+        -- vim.api.nvim_set_hl(0, "DiagnosticUnderlineError", { underline = true, sp = "#F28FAD" })
+        -- vim.api.nvim_set_hl(0, "DiagnosticUnderlineWarn", { underline = true, sp = "#FAE3B0" })
+        -- vim.api.nvim_set_hl(0, "DiagnosticUnderlineInfo", { underline = true, sp = "#89DCEB" })
+        -- vim.api.nvim_set_hl(0, "DiagnosticUnderlineHint", { underline = true, sp = "#B5E8E0" })
+        --
+        -- require("catppuccin").setup(opts)
+        -- vim.cmd.colorscheme("catppuccin")
     end,
 }
