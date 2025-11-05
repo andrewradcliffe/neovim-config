@@ -20,6 +20,9 @@ return {
         },
         overrides = function(colors)
             local theme = colors.theme
+
+            vim.api.nvim_set_hl(0, "RenderMarkdownChecked", { fg = "#98BB6C", bold = true }) -- green
+
             return {
                 LineNrAbove = { fg = theme.ui.nontext },
                 LineNr = { fg = theme.syn.number, bold = true },
