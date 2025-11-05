@@ -234,7 +234,7 @@ return {
             -- See :help vim.diagnostic.Opts
             vim.diagnostic.config({
                 severity_sort = true,
-                float = { border = "rounded", source = "if_many" },
+                float = { border = "rounded", source = "if_many", zindex = 1 },
                 underline = { severity = { min = vim.diagnostic.severity.WARN } },
                 signs = vim.g.have_nerd_font and {
                     text = {
