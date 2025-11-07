@@ -33,7 +33,7 @@ vim.o.formatoptions = "jql"
 local function update_title()
   local file = vim.fn.expand '%:t' -- Current filename
   local cwd = vim.fn.fnamemodify(vim.fn.getcwd(), ':t') -- Current directory name (project)
-  if file == '' then
+  if file == '' or string.find(file, "toggleterm") then
     file = '[No Name]'
   end
   vim.o.titlestring = string.format('%s (%s)', file, cwd)
