@@ -283,3 +283,12 @@ vim.api.nvim_create_user_command("Todo", function()
     vim.cmd("75vs %:h/todo.md")
 end, {})
 vim.keymap.set("n", "<leader>T", "<cmd>Todo<cr>", { desc = "Open [T]odo List" })
+
+-- Autocommands to save and load folds
+-- vim.cmd([[
+-- augroup remember_folds
+--     autocmd!
+--     autocmd BufWinLeave * mkview
+--     autocmd BufWinEnter * silent! loadview
+-- augroup END
+-- ]])
