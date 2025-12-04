@@ -8,6 +8,8 @@ vim.api.nvim_set_keymap("v", "<F1>", "<Nop>", { noremap = true, silent = true })
 
 vim.api.nvim_set_keymap("i", "<C-u>", "<Nop>", { noremap = true })
 
+vim.api.nvim_set_keymap("n", "<C-s>", "<C-x>", { noremap = true })
+
 vim.keymap.set("n", "ycc", "yygccp;", { remap = true, desc = "Duplicate line" })
 vim.keymap.set("n", "<M-/>", "gcc", { remap = true, desc = "Comment line (alias)" })
 
