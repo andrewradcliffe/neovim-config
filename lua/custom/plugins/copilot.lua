@@ -1,3 +1,22 @@
+-- local copilot_term = nil
+--
+-- vim.keymap.set({ "n", "t" }, "<C-t>c", function()
+--     if not copilot_term then
+--         local Terminal = require("toggleterm.terminal").Terminal
+--         copilot_term = Terminal:new({
+--             cmd = "copilot",
+--             hidden = true,
+--             on_open = function(terminal)
+--                 terminal.resize(terminal, 80)
+--             end,
+--             direction = "vertical",
+--             close_on_exit = true,
+--         })
+--     end
+--
+--     copilot_term:toggle()
+-- end, { desc = "Toggle Copilot terminal" })
+
 return {
   {
     'zbirenbaum/copilot.lua',

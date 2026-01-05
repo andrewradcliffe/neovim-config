@@ -20,6 +20,10 @@ return {
             config = true,
         },
         config = function()
+            require("roslyn").setup({
+                filewatching = "roslyn"
+            })
+
             local rzls_path = vim.fn.expand("$MASON/packages/rzls/libexec")
             local cmd = {
                 "roslyn",

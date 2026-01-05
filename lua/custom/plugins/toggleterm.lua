@@ -18,7 +18,7 @@ return {
             autochdir = true,
             highlights = {
                 Normal = {
-                    guibg = "#181825"
+                    link = "Normal"
                 },
             },
             float_opts = {
