@@ -13,33 +13,19 @@ return {
         },
     },
     {
+        "smjonas/inc-rename.nvim",
+        opts = {}
+    },
+    {
         "seblyng/roslyn.nvim",
         ft = { "cs", "razor", "cshtml" },
-        dependencies = {
-            "tris203/rzls.nvim",
-            config = true,
-        },
         config = function()
             require("roslyn").setup({
                 filewatching = "roslyn"
             })
 
-            local rzls_path = vim.fn.expand("$MASON/packages/rzls/libexec")
-            local cmd = {
-                "roslyn",
-                "--stdio",
-                "--logLevel=Information",
-                "--extensionLogDirectory=" .. vim.fs.dirname(vim.lsp.get_log_path()),
-                "--razorSourceGenerator=" .. vim.fs.joinpath(rzls_path, "Microsoft.CodeAnalysis.Razor.Compiler.dll"),
-                "--razorDesignTimePath=" .. vim.fs.joinpath(rzls_path, "Targets", "Microsoft.NET.Sdk.Razor.DesignTime.targets"),
-                "--extension",
-                vim.fs.joinpath(rzls_path, "RazorExtension", "Microsoft.VisualStudioCode.RazorExtension.dll"),
-            }
-
             vim.lsp.config("roslyn", {
-                cmd = cmd,
                 ft = { "cs", "razor" },
-                handlers = require("rzls.roslyn_handlers"),
                 settings = {
                     ["csharp|inlay_hints"] = {
                         csharp_enable_inlay_hints_for_implicit_object_creation = true,
@@ -66,14 +52,6 @@ return {
             })
 
             vim.lsp.enable("roslyn")
-        end,
-        init = function()
-            vim.filetype.add({
-                extension = {
-                    razor = "razor",
-                    cshtml = "razor",
-                },
-            })
         end,
     },
     {
@@ -170,7 +148,7 @@ return {
 
                     -- Rename the variable under your cursor.
                     --  Most Language Servers support renaming across files, etc.
-                    map("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
+                    -- map("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
 
                     -- Execute a code action, usually your cursor needs to be on top of an error
                     -- or a suggestion from your LSP for this to activate.
@@ -314,7 +292,6 @@ return {
 
             local ensure_installed = vim.tbl_keys(servers or {})
             vim.list_extend(ensure_installed, {
-                "stylua", -- Used to format Lua code
                 -- "python-lsp-server",
                 "pyright",
                 "ruff",
@@ -326,7 +303,6 @@ return {
                 "typescript-language-server",
                 "prettier",
                 "roslyn",
-                "rzls",
             })
             require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 

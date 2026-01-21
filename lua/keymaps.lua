@@ -286,6 +286,14 @@ vim.api.nvim_create_user_command("Todo", function()
 end, {})
 vim.keymap.set("n", "<leader>T", "<cmd>Todo<cr>", { desc = "Open [T]odo List" })
 
+vim.keymap.set("n", "<leader>rn", function()
+    return ":IncRename " .. vim.fn.expand("<cword>")
+end, { expr = true })
+
+vim.keymap.set("n", "<leader>m", function()
+    require("treesj").toggle()
+end, { desc = "Toggle join/splilt code" })
+
 -- Autocommands to save and load folds
 -- vim.cmd([[
 -- augroup remember_folds
