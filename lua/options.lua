@@ -24,6 +24,9 @@ vim.opt.fillchars = {
   eob = ' ',
 }
 
+-- Disable swapfiles
+vim.opt.swapfile = false
+
 -- Format options
 -- This is the default value minus 'cro' which automatically adds comments
 -- on the next line
