@@ -129,6 +129,10 @@ vim.opt.scrolloff = 0
 -- See `:help 'confirm'`
 vim.opt.confirm = true
 
+-- Disable copilot attaching automatically until command
+-- is run
+vim.g.copilot_enabled = false
+
 vim.filetype.add({
     extension = {
         razor = "razor",
