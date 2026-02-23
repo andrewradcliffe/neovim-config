@@ -181,8 +181,10 @@ end, { desc = "Close [a]ll buffers" })
 vim.keymap.set("n", "<leader>bo", "<cmd>%bd|e#|bd#<cr>", { desc = "Close all but current buffer" })
 
 -- Terminal mappings
-vim.keymap.set({ "n", "t" }, "<C-t>h", "<cmd>ToggleTerm direction=horizontal size=15<cr>", { desc = "Toggle horizontal terminal" })
-vim.keymap.set({ "n", "t" }, "<C-t>v", "<cmd>ToggleTerm direction=vertical size=100<cr>", { desc = "Toggle vertical terminal" })
+vim.keymap.set({ "n", "t" }, "<C-t>h", "<cmd>ToggleTerm direction=horizontal size=15<cr>",
+    { desc = "Toggle horizontal terminal" })
+vim.keymap.set({ "n", "t" }, "<C-t>v", "<cmd>ToggleTerm direction=vertical size=100<cr>",
+    { desc = "Toggle vertical terminal" })
 vim.keymap.set({ "n", "t" }, "<C-t>f", "<cmd>ToggleTerm direction=float<cr>", { desc = "Toggle floating terminal" })
 vim.keymap.set({ "n", "t" }, "<C-t>t", "<cmd>ToggleTerm direction=tab<cr>", { desc = "Toggle Terminal in Tab" })
 
@@ -254,7 +256,8 @@ vim.api.nvim_create_autocmd("BufEnter", {
         local buf = vim.api.nvim_get_current_buf()
 
         if file_size > limit then
-            vim.notify("Skipping csvview.nvim: file too large (" .. file_size / 1024 / 1024 .. " MB)", vim.log.levels.WARN)
+            vim.notify("Skipping csvview.nvim: file too large (" .. file_size / 1024 / 1024 .. " MB)",
+                vim.log.levels.WARN)
             return
         end
 
@@ -302,3 +305,17 @@ end, { desc = "Toggle join/splilt code" })
 --     autocmd BufWinEnter * silent! loadview
 -- augroup END
 -- ]])
+
+-- vim.api.nvim_create_autocmd("BufEnter", {
+--     pattern = { "*.cs", "*.razor" },
+--     callback = function()
+--         vim.schedule(function()
+--             vim.opt_local.foldmethod = "marker"
+--             vim.opt_local.foldmarker = "#region,#endregion"
+--             vim.opt_local.foldlevel = 99
+--             -- vim.opt.foldtext = [[
+--             --     substitute(getline(v:foldstart), '^\\s*#region\\s*', '', '')
+--             -- ]]
+--         end)
+--     end,
+-- })
