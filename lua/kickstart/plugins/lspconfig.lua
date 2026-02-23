@@ -350,10 +350,6 @@ return {
                 },
             })
 
-            vim.lsp.config("html_ls", {
-                ft = { "html", "razor" },
-            })
-
             require("mason-lspconfig").setup({
                 automatic_enable = true, -- automatically enable servers that are installed
                 automatic_installation = true,
