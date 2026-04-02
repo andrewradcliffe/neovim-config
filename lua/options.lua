@@ -28,9 +28,14 @@ vim.opt.fillchars = {
 vim.opt.swapfile = false
 
 -- Format options
--- This is the default value minus 'cro' which automatically adds comments
--- on the next line
-vim.o.formatoptions = "jql"
+-- Remove 'c', 'r', 'o' flags which automatically add comments on new lines
+-- Must use autocmd because filetype plugins override formatoptions
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "*",
+  callback = function()
+    vim.opt_local.formatoptions:remove({ "c", "r", "o" })
+  end,
+})
 
 -- Function to update the title with filename and current folder (project) name
 local function update_title()

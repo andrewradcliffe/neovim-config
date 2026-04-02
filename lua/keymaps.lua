@@ -306,16 +306,16 @@ end, { desc = "Toggle join/splilt code" })
 -- augroup END
 -- ]])
 
--- vim.api.nvim_create_autocmd("BufEnter", {
---     pattern = { "*.cs", "*.razor" },
---     callback = function()
---         vim.schedule(function()
---             vim.opt_local.foldmethod = "marker"
---             vim.opt_local.foldmarker = "#region,#endregion"
---             vim.opt_local.foldlevel = 99
---             -- vim.opt.foldtext = [[
---             --     substitute(getline(v:foldstart), '^\\s*#region\\s*', '', '')
---             -- ]]
---         end)
---     end,
--- })
+vim.api.nvim_create_autocmd("BufEnter", {
+    pattern = { "*.cs", "*.razor" },
+    callback = function()
+        vim.schedule(function()
+            vim.opt_local.foldmethod = "marker"
+            vim.opt_local.foldmarker = "#region,#endregion"
+            vim.opt_local.foldlevel = 99
+            -- vim.opt.foldtext = [[
+            --     substitute(getline(v:foldstart), '^\\s*#region\\s*', '', '')
+            -- ]]
+        end)
+    end,
+})
