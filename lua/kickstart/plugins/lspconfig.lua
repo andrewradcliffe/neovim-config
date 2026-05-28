@@ -21,7 +21,34 @@ return {
         ft = { "cs", "razor", "cshtml" },
         config = function()
             require("roslyn").setup({
-                filewatching = "roslyn"
+                filewatching = "roslyn",
+                extensions = {
+                    razor = {
+                        enabled = true,
+                        config = function()
+                            local razor_extension_path = require("roslyn.utils").find_razor_extension_path()
+                            if razor_extension_path == nil then
+                                return {
+                                    path = nil,
+                                }
+                            end
+
+                            return {
+                                path = vim.fs.joinpath(razor_extension_path,
+                                    "Microsoft.VisualStudioCode.RazorExtension.dll"),
+                                args = {
+                                    "--razorSourceGenerator="
+                                    .. vim.fs.joinpath(razor_extension_path, "Microsoft.CodeAnalysis.Razor.Compiler.dll"),
+                                    "--razorDesignTimePath=" .. vim.fs.joinpath(
+                                        razor_extension_path,
+                                        "Targets",
+                                        "Microsoft.NET.Sdk.Razor.DesignTime.targets"
+                                    ),
+                                },
+                            }
+                        end,
+                    },
+                },
             })
 
             vim.lsp.config("roslyn", {
@@ -47,6 +74,14 @@ return {
                     },
                     ["csharp|formatting"] = {
                         dotnet_organize_imports_on_format = true,
+                    },
+                    ["csharp|background_analysis"] = {
+                        dotnet_analyzer_diagnostics_scope = "openFiles",
+                        dotnet_compiler_diagnostics_scope = "fullSolution",
+                    },
+                    ["csharp|completion"] = {
+                        dotnet_show_completion_items_from_unimported_namespaces = true,
+                        dotnet_show_name_completion_suggestions = true,
                     },
                 },
             })
@@ -152,7 +187,7 @@ return {
 
                     -- Execute a code action, usually your cursor needs to be on top of an error
                     -- or a suggestion from your LSP for this to activate.
-                    map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction", { "n", "x" })
+                    map("<leader>ca", require("actions-preview").code_actions, "[C]ode [A]ction", { "n", "x" })
 
                     -- WARN: This is not Goto Definition, this is Goto Declaration.
                     --  For example, in C this would take you to the header.
@@ -230,17 +265,17 @@ return {
                 virtual_text = false,
                 -- virtual_text = {
                 --     prefix = "● "
-                    -- source = "if_many",
-                    -- spacing = 1,
-                    -- format = function(diagnostic)
-                    --     local diagnostic_message = {
-                    --         [vim.diagnostic.severity.ERROR] = diagnostic.message,
-                    --         [vim.diagnostic.severity.WARN] = diagnostic.message,
-                    --         [vim.diagnostic.severity.INFO] = diagnostic.message,
-                    --         [vim.diagnostic.severity.HINT] = diagnostic.message,
-                    --     }
-                    --     return diagnostic_message[diagnostic.severity]
-                    -- end,
+                -- source = "if_many",
+                -- spacing = 1,
+                -- format = function(diagnostic)
+                --     local diagnostic_message = {
+                --         [vim.diagnostic.severity.ERROR] = diagnostic.message,
+                --         [vim.diagnostic.severity.WARN] = diagnostic.message,
+                --         [vim.diagnostic.severity.INFO] = diagnostic.message,
+                --         [vim.diagnostic.severity.HINT] = diagnostic.message,
+                --     }
+                --     return diagnostic_message[diagnostic.severity]
+                -- end,
                 -- },
             })
 
@@ -353,7 +388,7 @@ return {
             require("mason-lspconfig").setup({
                 automatic_enable = true, -- automatically enable servers that are installed
                 automatic_installation = true,
-                ensure_installed = {}, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
+                ensure_installed = {},   -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
             })
 
             vim.api.nvim_create_autocmd("LspAttach", {
