@@ -8,6 +8,9 @@ vim.api.nvim_set_keymap("v", "<F1>", "<Nop>", { noremap = true, silent = true })
 
 vim.api.nvim_set_keymap("i", "<C-u>", "<Nop>", { noremap = true })
 
+-- Disable tab key sending <C-i> in normal mode
+-- vim.keymap.set('n', '<Tab>', '<Nop>', { noremap = true, silent = true })
+
 vim.api.nvim_set_keymap("n", "<C-s>", "<C-x>", { noremap = true })
 
 vim.keymap.set("n", "ycc", "yygccp;", { remap = true, desc = "Duplicate line" })
@@ -40,7 +43,10 @@ vim.keymap.set("n", "<leader>td", function()
 end, { desc = "Toggle buffer diagnostics" })
 
 -- LSP
-vim.keymap.set("n", "<leader>lr", "<cmd>LspRestart<cr>", { desc = "[R]estart LSP" })
+vim.keymap.set("n", "<leader>lr", "<cmd>lsp restart<cr>", { desc = "[R]estart LSP" })
+vim.keymap.set("n", "<leader>li", function()
+    vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+end, { desc = "Toggle [I]nlay Hints"})
 
 -- Python migration script boilerplate
 -- vim.keymap.set("n", "<leader>pm", '"mPGdd10gg$', { desc = "[P]ython [M]igration Script Boilerplate" })
@@ -187,6 +193,25 @@ vim.keymap.set({ "n", "t" }, "<C-t>v", "<cmd>ToggleTerm direction=vertical size=
     { desc = "Toggle vertical terminal" })
 vim.keymap.set({ "n", "t" }, "<C-t>f", "<cmd>ToggleTerm direction=float<cr>", { desc = "Toggle floating terminal" })
 vim.keymap.set({ "n", "t" }, "<C-t>t", "<cmd>ToggleTerm direction=tab<cr>", { desc = "Toggle Terminal in Tab" })
+
+local copilot_term = nil
+vim.keymap.set({ "n", "t" }, "<C-t>c", function()
+    if not copilot_term then
+        local Terminal = require("toggleterm.terminal").Terminal
+        copilot_term = Terminal:new({
+            cmd = "copilot",
+            hidden = true,
+            on_open = function(terminal)
+                terminal.resize(terminal, 80)
+            end,
+            direction = "vertical",
+            close_on_exit = true,
+        })
+    end
+
+    copilot_term:toggle()
+end, { desc = "Toggle Copilot terminal" })
+
 
 -- Open VSCode at current file
 vim.keymap.set("n", "<leader>wc", function()
