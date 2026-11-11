@@ -49,14 +49,12 @@ vim.keymap.set("n", "<leader>li", function()
 end, { desc = "Toggle [I]nlay Hints"})
 
 -- Python migration script boilerplate
--- vim.keymap.set("n", "<leader>pm", '"mPGdd10gg$', { desc = "[P]ython [M]igration Script Boilerplate" })
 vim.keymap.set("n", "<leader>pm", function()
     vim.api.nvim_paste(
         [[
 from navtor.db import connect_mongo
 from navtor.models.report import Report
 from navtor.models.vessel import Vessel
-import pandas as pd
 
 connect_mongo()
 

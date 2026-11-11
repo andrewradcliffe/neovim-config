@@ -76,6 +76,7 @@ return {
                         'bin/',
                         '.vs/',
                         '.idea/',
+                        '.repro/',
                         '%.xlsx$',
                         '%.xls$',
                         '%.jpg$',
@@ -116,6 +117,8 @@ return {
                             'bin',
                             '--exclude',
                             'obj',
+                            '--exclude',
+                            '.repro',
                         },
                     },
                     oldfiles = {
@@ -173,6 +176,9 @@ return {
             -- vim.keymap.set('n', '<leader>sn', function()
             --   builtin.find_files { cwd = vim.fn.stdpath 'config' }
             -- end, { desc = '[S]earch [N]eovim files' })
+
+            -- Search TODO items in cwd
+            vim.keymap.set('n', '<leader>st', '<cmd>TodoTelescope<cr>', { desc = '[S]earch [T]ODOs'})
         end,
     },
 }
