@@ -22,37 +22,72 @@ return {
         config = function()
             require("roslyn").setup({
                 filewatching = "roslyn",
-                extensions = {
-                    razor = {
-                        enabled = true,
-                        config = function()
-                            local razor_extension_path = require("roslyn.utils").find_razor_extension_path()
-                            if razor_extension_path == nil then
-                                return {
-                                    path = nil,
-                                }
-                            end
+                -- extensions = {
+                --     razor = {
+                --         enabled = true,
+                --         config = function()
+                --             local razor_extension_path = require("roslyn.utils").find_razor_extension_path()
+                --             if razor_extension_path == nil then
+                --                 return {
+                --                     path = nil,
+                --                 }
+                --             end
+                --
+                --             return {
+                --                 path = vim.fs.joinpath(razor_extension_path,
+                --                     "Microsoft.VisualStudioCode.RazorExtension.dll"),
+                --                 args = {
+                --                     "--razorSourceGenerator="
+                --                     .. vim.fs.joinpath(razor_extension_path, "Microsoft.CodeAnalysis.Razor.Compiler.dll"),
+                --                     "--razorDesignTimePath=" .. vim.fs.joinpath(
+                --                         razor_extension_path,
+                --                         "Targets",
+                --                         "Microsoft.NET.Sdk.Razor.DesignTime.targets"
+                --                     ),
+                --                 },
+                --             }
+                --         end,
+                --     },
+                -- },
+            })
 
-                            return {
-                                path = vim.fs.joinpath(razor_extension_path,
-                                    "Microsoft.VisualStudioCode.RazorExtension.dll"),
-                                args = {
-                                    "--razorSourceGenerator="
-                                    .. vim.fs.joinpath(razor_extension_path, "Microsoft.CodeAnalysis.Razor.Compiler.dll"),
-                                    "--razorDesignTimePath=" .. vim.fs.joinpath(
-                                        razor_extension_path,
-                                        "Targets",
-                                        "Microsoft.NET.Sdk.Razor.DesignTime.targets"
-                                    ),
-                                },
-                            }
-                        end,
-                    },
-                },
+            -- Roslyn uses one diagnostic namespace per analyzer (9 total), and each reports
+            -- the same diagnostics in razor files, causing N duplicates per warning.
+            -- Deduplicate globally across all roslyn namespaces after diagnostics are stored.
+            local roslyn_dedup_in_progress = false
+            vim.api.nvim_create_autocmd("DiagnosticChanged", {
+                callback = function(args)
+                    if roslyn_dedup_in_progress then return end
+                    if vim.bo[args.buf].filetype ~= "razor" then return end
+                    local seen = {}
+                    roslyn_dedup_in_progress = true
+                    for ns_id, ns_info in pairs(vim.diagnostic.get_namespaces()) do
+                        if ns_info.name:match("^nvim%.lsp%.roslyn%.") then
+                            local diags = vim.diagnostic.get(args.buf, { namespace = ns_id })
+                            local unique = {}
+                            for _, diag in ipairs(diags) do
+                                local key = string.format(
+                                    "%d:%d:%s:%s",
+                                    diag.lnum, diag.col,
+                                    tostring(diag.code or ""),
+                                    diag.message
+                                )
+                                if not seen[key] then
+                                    seen[key] = true
+                                    table.insert(unique, diag)
+                                end
+                            end
+                            if #unique < #diags then
+                                vim.diagnostic.set(ns_id, args.buf, unique)
+                            end
+                        end
+                    end
+                    roslyn_dedup_in_progress = false
+                end,
             })
 
             vim.lsp.config("roslyn", {
-                ft = { "cs", "razor" },
+                -- ft = { "cs", "razor" },
                 settings = {
                     ["csharp|inlay_hints"] = {
                         csharp_enable_inlay_hints_for_implicit_object_creation = true,
@@ -366,7 +401,14 @@ return {
             })
 
             vim.lsp.config("pyright", {
-                single_file_support = false,
+                -- override root markers to exclude pyproject.toml and setup.py
+                root_markers = {
+                  'setup.cfg',
+                  'requirements.txt',
+                  'Pipfile',
+                  'pyrightconfig.json',
+                  '.git',
+                },
                 capabilities = capabilities,
                 settings = {
                     pyright = {
