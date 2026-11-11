@@ -72,7 +72,7 @@ return {
             desc = "Debug: Toggle Breakpoint",
         },
         {
-            "<leader>dB",
+            "<F8>",
             function()
                 require("dap").set_breakpoint(vim.fn.input("Breakpoint condition: "))
             end,
@@ -176,12 +176,34 @@ return {
             },
         }
 
-        require("dap-python").setup("py")
+        -- Resolve the python interpreter: prefer .venv in the cwd, fall back to "py"
+        local function get_python_path()
+            local venv_python = vim.fn.getcwd() .. "\\.venv\\Scripts\\python.exe"
+            if vim.fn.executable(venv_python) == 1 then
+                return venv_python
+            end
+            return "python"
+        end
+
+        require("dap-python").setup(get_python_path())
+
+        table.insert(dap.configurations.python, {
+            type = "python",
+            request = "launch",
+            name = "Launch current file",
+            program = "${file}",
+            pythonPath = get_python_path,
+            cwd = vim.fn.getcwd(),
+            env = { PYTHONPATH = vim.fn.getcwd() },
+        })
         table.insert(dap.configurations.python, {
             type = "python",
             request = "launch",
             name = "Launch Flask server",
             program = vim.fn.getcwd() .. "\\server.py",
+            pythonPath = get_python_path,
+            cwd = vim.fn.getcwd(),
+            env = { PYTHONPATH = vim.fn.getcwd() },
         })
     end,
 }
