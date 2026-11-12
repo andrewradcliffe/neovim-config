@@ -1,14 +1,16 @@
 return {
-    -- https://github.com/epwalsh/obsidian.nvim
+    -- https://github.com/obsidian-nvim/obsidian.nvim
     {
-        "epwalsh/obsidian.nvim",
+        "obsidian-nvim/obsidian.nvim",
         version = "*",
         lazy = true,
         ft = "markdown",
+        cmd = "Obsidian",
         dependencies = {
             "nvim-lua/plenary.nvim",
         },
         opts = {
+            legacy_commands = false,
             workspaces = {
                 {
                     name = "Work",
@@ -16,32 +18,21 @@ return {
                 },
             },
             templates = {
-                subdir = "templates",
+                folder = "templates",
             },
             daily_notes = {
                 folder = "Daily Notes",
-                date_format = "%Y-%m-%d",
+                date_format = "YYYY-MM-DD",
                 template = "Daily Note Template.md",
-            },
-            completion = {
-                nvim_cmp = true,
-            },
-            mappings = {
-                ["gf"] = {
-                    action = function()
-                        return require("obsidian").util.gf_passthrough()
-                    end,
-                    opts = { noremap = true, expr = true, buffer = true },
-                },
-                -- ["<cr>"] = {
-                --     action = function()
-                --         return require("obsidian").util.smart_action()
-                --     end,
-                --     opts = { buffer = true, expr = true }
-                -- },
             },
             ui = {
                 enable = false,
+            },
+            footer = {
+                enabled = false,
+            },
+            checkbox = {
+                order = { " ", "x" },
             },
             note_id_func = function(title)
                 return title

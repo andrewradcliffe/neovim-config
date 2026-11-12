@@ -142,15 +142,35 @@ vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper win
 -- Obsidian and Markdown
 vim.keymap.set("n", "<leader>oc", function()
     vim.schedule(function()
-        require("obsidian").util.toggle_checkbox()
+        vim.cmd("Obsidian toggle_checkbox")
     end)
 end, { desc = "Toggle Checkbox" })
 
-vim.keymap.set("n", "<leader>ot", "<cmd>ObsidianToday<cr>", { desc = "[T]oday's daily note" })
-vim.keymap.set("n", "<leader>oy", "<cmd>ObsidianYesterday<cr>", { desc = "[Y]esterday's daily note" })
-vim.keymap.set("n", "<leader>oT", "<cmd>ObsidianTomorrow<cr>", { desc = "[T]omorrow's daily note" })
+local open_obsidian_note = function(command)
+    local success, err = pcall(vim.cmd, command)
+    if not success then
+        vim.notify("Obsidian plugin not loaded or command not found: " .. err, vim.log.levels.ERROR)
+        return
+    end
+    -- obsidian.nvim opens the note via vim.schedule, so queue the jump after it
+    vim.schedule(function()
+        vim.cmd [[
+            norm 10gg^
+        ]]
+    end)
+end
+
+vim.keymap.set("n", "<leader>ot", function()
+    open_obsidian_note("Obsidian today")
+end, { desc = "[T]oday's daily note" })
+vim.keymap.set("n", "<leader>oy", function()
+    open_obsidian_note("Obsidian yesterday")
+end, { desc = "[Y]esterday's daily note" })
+vim.keymap.set("n", "<leader>oT", function()
+    open_obsidian_note("Obsidian tomorrow")
+end, { desc = "[T]omorrow's daily note" })
 vim.keymap.set("n", "<leader>od", function()
-    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(":ObsidianToday ", true, false, true), "n", false)
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(":Obsidian today ", true, false, true), "n", false)
 end, { desc = "Open [d]aily note" })
 vim.keymap.set("n", "<leader>op", "<cmd>MarkdownPreviewToggle<cr>", { desc = "Toggle markdown [p]review" })
 
